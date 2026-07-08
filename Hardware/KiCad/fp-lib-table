@@ -1,0 +1,7 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "150060VS55040-G")(type "KiCad")(uri "C:/Users/dixit.golakiya/Downloads/150060VS55040")(options "")(descr ""))
+  (lib (name "TLV9064")(type "KiCad")(uri "C:/Users/dixit.golakiya/Downloads/ul_TLV9064IRUCR/KiCADv6/footprints.pretty")(options "")(descr ""))
+  (lib (name "500SSP1S2M2QEA")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/500SSP1S2M2QEA")(options "")(descr ""))
+  (lib (name "TS04")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/TS04/TS04.pretty")(options "")(descr ""))
+)

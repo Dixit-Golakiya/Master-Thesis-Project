@@ -1,0 +1,10 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "TLV3541")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/TLV3541/KiCADv6/2025-09-04_09-05-42.kicad_sym")(options "")(descr ""))
+  (lib (name "TMCS1108A4B")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/TMCS1108/KiCADv6/2025-09-10_12-04-43.kicad_sym")(options "")(descr ""))
+  (lib (name "FSM8JSMA")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/FSM8JSMA/KiCADv6/2025-09-09_07-10-03.kicad_sym")(options "")(descr ""))
+  (lib (name "150060VS55040-G")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/150060VS55040/WL-SMCD_0603.kicad_sym")(options "")(descr ""))
+  (lib (name "500SSP1S2M2QEA")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/500SSP1S2M2QEA/500SSP1S2M2QEA.kicad_sym")(options "")(descr ""))
+  (lib (name "TLV9064IDR")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/TLV9064IDR/TLV9064IDR.kicad_sym")(options "")(descr ""))
+  (lib (name "TS04")(type "KiCad")(uri "C:/Users/dixit.golakiya/Desktop/Master_thesis/Libraries/TS04/TS04.kicad_sym")(options "")(descr ""))
+)
