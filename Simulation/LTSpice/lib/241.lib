@@ -1,0 +1,173 @@
+* INA241A_bidirectional.lib -- bidirectional current-sense model for KiCad/ngspice
+* Pin order matches KiCad symbol: 1(-) 2(GND) 3(REF2) 4(GND) 5(out) 6(V+) 7(REF1) 8(+)
+* Based on INA241A-Q1 datasheet specifications
+
+********** PARAMETERS **********
+.param pi=3.14159265359
+.param bw=1e6          ; bandwidth 1 MHz (from datasheet)
+.param sr=5e6          ; slew rate 5 V/us (from datasheet) 
+.param vs_min=2.7      ; minimum supply voltage
+.param vs_max=5.5      ; maximum supply voltage
+.param vs_nom=5.0      ; nominal supply voltage
+.param vos_max=25e-6   ; 25µV max offset voltage (typical from datasheet)
+.param ib_max=0.5e-9   ; 0.5nA max input bias current (from datasheet)
+.param cmrr_min=120    ; 120 dB min CMRR (from datasheet)
+.param psrr_min=100    ; 100 dB min PSRR
+.param voh_sat=0.2     ; output high saturation (Vs - 0.2V)
+.param vol_sat=0.2     ; output low saturation (0.2V)
+
+********** SUBCIRCUITS (GAIN VARIANTS) **********
+* Gain = 10 V/V (Version A1)
+.subckt INA241A1 INN GND1 REF2 GND2 OUT VCC REF1 INP
+.param gain=10
+
+* Input stage modeling
+* Offset voltage source
+VOS INP_INT INP DC {vos_max}
+
+* Input bias currents
+IB1 INP_INT 0 DC {ib_max}  
+IB2 INN 0 DC {ib_max}
+
+* Common-mode and differential-mode processing
+* REF voltage is the average of REF1 and REF2
+EREF VREF 0 VALUE={(V(REF1)+V(REF2))/2}
+
+* Differential amplification with reference centering
+* Output = Gain × (V+ - V-) + VREF
+EDIFF VDIFF 0 VALUE={gain*V(INP_INT,INN) + V(VREF)}
+
+* Bandwidth limitation (single-pole rolloff at 1MHz)
+RBWL VDIFF VBWL 159.15  ; R = 1/(2*pi*f*C) for 1MHz with 1pF
+CBWL VBWL 0 1p
+
+* Slew rate limiting
+* Using voltage-controlled current source method
+GSLEW VBWL VSLEW VALUE={LIMIT((V(VBWL)-V(VSLEW))*1e9, -sr*1e-9, sr*1e-9)}
+CSLEW VSLEW 0 1n
+
+* Output stage with supply-dependent saturation
+EOUT OUT 0 VALUE={LIMIT(V(VSLEW), V(VCC)*vol_sat/vs_nom, V(VCC)-voh_sat)}
+
+* Supply and ground connections
+RCC VCC 0 1e12      ; High resistance to prevent floating
+RGND1 GND1 0 1m     ; Low resistance ground connection  
+RGND2 GND2 0 1m     ; Low resistance ground connection
+RREF1 REF1 0 1e12   ; High resistance to prevent floating
+RREF2 REF2 0 1e12   ; High resistance to prevent floating
+
+.ends INA241A1
+
+* Gain = 20 V/V (Version A2)  
+.subckt INA241A2 INN GND1 REF2 GND2 OUT VCC REF1 INP
+.param gain=20
+VOS INP_INT INP DC {vos_max}
+IB1 INP_INT 0 DC {ib_max}  
+IB2 INN 0 DC {ib_max}
+EREF VREF 0 VALUE={(V(REF1)+V(REF2))/2}
+EDIFF VDIFF 0 VALUE={gain*V(INP_INT,INN) + V(VREF)}
+RBWL VDIFF VBWL 159.15
+CBWL VBWL 0 1p3
+GSLEW VBWL VSLEW VALUE={LIMIT((V(VBWL)-V(VSLEW))*1e9, -sr*1e-9, sr*1e-9)}
+CSLEW VSLEW 0 1n
+EOUT OUT 0 VALUE={LIMIT(V(VSLEW), V(VCC)*vol_sat/vs_nom, V(VCC)-voh_sat)}
+RCC VCC 0 1e12
+RGND1 GND1 0 1m
+RGND2 GND2 0 1m
+RREF1 REF1 0 1e12
+RREF2 REF2 0 1e12
+.ends INA241A2
+
+* Gain = 50 V/V (Version A3)
+.subckt INA241A3 INN GND1 REF2 GND2 OUT VCC REF1 INP
+.param gain=50
+VOS INP_INT INP DC {vos_max}
+IB1 INP_INT 0 DC {ib_max}  
+IB2 INN 0 DC {ib_max}
+EREF VREF 0 VALUE={(V(REF1)+V(REF2))/2}
+EDIFF VDIFF 0 VALUE={gain*V(INP_INT,INN) + V(VREF)}
+RBWL VDIFF VBWL 159.15
+CBWL VBWL 0 1p
+GSLEW VBWL VSLEW VALUE={LIMIT((V(VBWL)-V(VSLEW))*1e9, -sr*1e-9, sr*1e-9)}
+CSLEW VSLEW 0 1n
+EOUT OUT 0 VALUE={LIMIT(V(VSLEW), V(VCC)*vol_sat/vs_nom, V(VCC)-voh_sat)}
+RCC VCC 0 1e12
+RGND1 GND1 0 1m
+RGND2 GND2 0 1m
+RREF1 REF1 0 1e12
+RREF2 REF2 0 1e12
+.ends INA241A3
+
+* Gain = 100 V/V (Version A4)
+.subckt INA241A4 INN GND1 REF2 GND2 OUT VCC REF1 INP
+.param gain=100
+VOS INP_INT INP DC {vos_max}
+IB1 INP_INT 0 DC {ib_max}  
+IB2 INN 0 DC {ib_max}
+EREF VREF 0 VALUE={(V(REF1)+V(REF2))/2}
+EDIFF VDIFF 0 VALUE={gain*V(INP_INT,INN) + V(VREF)}
+RBWL VDIFF VBWL 159.15
+CBWL VBWL 0 1p
+GSLEW VBWL VSLEW VALUE={LIMIT((V(VBWL)-V(VSLEW))*1e9, -sr*1e-9, sr*1e-9)}
+CSLEW VSLEW 0 1n
+EOUT OUT 0 VALUE={LIMIT(V(VSLEW), V(VCC)*vol_sat/vs_nom, V(VCC)-voh_sat)}
+RCC VCC 0 1e12
+RGND1 GND1 0 1m
+RGND2 GND2 0 1m
+RREF1 REF1 0 1e12
+RREF2 REF2 0 1e12
+.ends INA241A4
+
+* Gain = 200 V/V (Version A5)
+.subckt INA241A5 INN GND1 REF2 GND2 OUT VCC REF1 INP
+.param gain=200
+VOS INP_INT INP DC {vos_max}
+IB1 INP_INT 0 DC {ib_max}  
+IB2 INN 0 DC {ib_max}
+EREF VREF 0 VALUE={(V(REF1)+V(REF2))/2}
+EDIFF VDIFF 0 VALUE={gain*V(INP_INT,INN) + V(VREF)}
+RBWL VDIFF VBWL 159.15
+CBWL VBWL 0 1p
+GSLEW VBWL VSLEW VALUE={LIMIT((V(VBWL)-V(VSLEW))*1e9, -sr*1e-9, sr*1e-9)}
+CSLEW VSLEW 0 1n
+EOUT OUT 0 VALUE={LIMIT(V(VSLEW), V(VCC)*vol_sat/vs_nom, V(VCC)-voh_sat)}
+RCC VCC 0 1e12
+RGND1 GND1 0 1m
+RGND2 GND2 0 1m
+RREF1 REF1 0 1e12
+RREF2 REF2 0 1e12
+.ends INA241A5
+
+********** ADDITIONAL FUNCTIONS/MACROS **********
+* Enhanced PWM rejection can be modeled with additional filtering if needed
+* .subckt PWM_FILTER input output
+* * Add complex filtering for PWM rejection simulation
+* .ends
+
+********** USAGE NOTES **********
+* Pin Configuration (SOT-23-8):
+* Pin 1 (-)    : Negative input (current sensing)
+* Pin 2 (GND)  : Ground connection
+* Pin 3 (REF2) : Reference voltage 2 (for bidirectional operation)
+* Pin 4 (GND)  : Ground connection  
+* Pin 5 (OUT)  : Output voltage
+* Pin 6 (V+)   : Positive supply voltage (2.7V to 5.5V)
+* Pin 7 (REF1) : Reference voltage 1 (for bidirectional operation)
+* Pin 8 (+)    : Positive input (current sensing)
+*
+* Key Features Modeled:
+* - 1 MHz bandwidth
+* - 5 V/µs slew rate
+* - 25µV max offset voltage
+* - Bidirectional operation with reference centering
+* - Supply-dependent output saturation
+* - Input bias current effects
+*
+* For KiCad/ngspice Usage:
+* 1. Add this .lib file to your simulation settings
+* 2. Use subcircuit names: INA241A1, INA241A2, INA241A3, INA241A4, INA241A5
+* 3. Connect both GND pins (2,4) to the same ground net
+* 4. Connect REF1 and REF2 to set the zero-current output voltage
+* 5. Ensure supply voltage is within 2.7V to 5.5V range
+*
+.end

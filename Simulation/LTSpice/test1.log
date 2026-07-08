@@ -1,0 +1,31 @@
+LTspice 26.0.1 for Windows
+Circuit: C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\test1.cir
+Start Time: Tue May  5 16:14:53 2026
+Options:abstol=1n reltol=0.01 vntol=1m noopiter
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+abstol = 1e-09
+reltol = 0.01
+volttol = 0.001
+noOpIter = true
+Compress1stOrder = true
+Compress2ndOrder = true
+ERROR: Node u5:vslew is floating and connected to current source u5:GSLEW
+ERROR: Node u6:vslew is floating and connected to current source u6:GSLEW
+
+Direct Newton iteration for .op point skipped.
+Starting Gmin stepping
+Gmin stepping succeeded in finding the operating point.
+
+Total elapsed time: 0.681 seconds.
+
+Files loaded:
+C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\test1.cir
+C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\irl540ns.spi
+C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\TLV354.LIB
+C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\241.lib
+C:\Users\dixit\Downloads\Simulation-20260505T135938Z-3-001\Simulation\TMCS1108A3B.lib
+
